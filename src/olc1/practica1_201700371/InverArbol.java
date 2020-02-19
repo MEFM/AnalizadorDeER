@@ -22,44 +22,53 @@ public class InverArbol {
 
     }
 
-    public String rpn(){
-        String derecho, izquierdo;
+    public String rpn() {
+        String derecho = "", izquierdo = "";
         String acumulador = "";
-        for(Token token: prefij){
-            if(operador(token.getLexema())){
-                derecho = pila.pop();
-                if(pila.empty()){
-                    System.out.println("So fking sad");
+        for (Token token : prefij) {
+            if (operador(token.getLexema())) {
+                try {
+                    derecho = pila.pop();
+                } catch (Exception e) {
                 }
-                izquierdo = pila.pop();
+
+                if (pila.empty()) {
+                    //System.out.println("So fking sad");
+                }
+                try {
+                    izquierdo = pila.pop();
+                } catch (Exception e) {
+                }
+                
                 String infijo = operar(izquierdo, token.getLexema(), derecho);
-                acumulador += " "+infijo;
-            }else{
+                acumulador += " " + infijo;
+            } else {
                 pila.push(token.getLexema());
             }
         }
-        
+
         return acumulador;
     }
-    
+
     String operar(String izquierda, String operador, String derecho) {
 
         switch (operador) {
             case "|":
-                return izquierda + operador + derecho;
                 
+                return izquierda + operador + derecho;
+
             case "+":
                 return izquierda + operador + derecho;
-               
+
             case "*":
                 return izquierda + operador + derecho;
-             
+
             case ".":
                 return izquierda + operador + derecho;
-              
+
             case "?":
                 return izquierda + operador + derecho;
-             
+
         }
         return "";
     }

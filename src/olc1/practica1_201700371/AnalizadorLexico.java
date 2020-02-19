@@ -413,43 +413,52 @@ public class AnalizadorLexico {
 
             ArrayList<Token> palabras = new ArrayList<>();
 
-            if (tken.get(i).getLexema() == "CONJ" && tken.get(i + 2).getTipo().equals("Id")) {
+            if (tken.get(i).getLexema().equals("CONJ") && tken.get(i + 2).getTipo().equals("Id")) {
+
                 int j = i + 4;
                 String macros = "";
                 String nombreMacros = tken.get(i + 2).getTipo();
-                System.out.println("----Previo a captar macros----");
 
-                while (tken.get(j).getLexema() != ";") {
+                System.out.println("----Previo a captar macros----");
+                i = i + 3;
+                while (!tken.get(i).getLexema().equals(";")) {
                     System.out.println("Captando macros");
-                    System.out.println("");
-                    macros += tken.get(j).getLexema();
-                    j++;
+                    System.out.println(tken.get(i).getLexema());
+                    if (tken.get(i).getLexema().equals("->")) {
+
+                    } else {
+                        macros += tken.get(i).getLexema();
+                    }
+
+                    i++;
                 }
-                macro.add(new MacroConjunto(macros, nombreMacros));
-            } else if (tken.get(i).getTipo() == "Id" && tken.get(i + 1).getLexema() == "->") {
+                System.out.println("-----Analisis Macros Final-----");
+                System.out.println(macros);
+                System.out.println("");
+                macro.add(new MacroConjunto(nombreMacros, macros));
+            } else if (tken.get(i).getTipo().equals("Id") && (tken.get(i + 1).getLexema().equals("->") && !tken.get(i + 2).getTipo().equals("Cadena"))) {
                 int j = i + 2;
-                String id = tken.get(i).getTipo();
+                String id = tken.get(i).getLexema();
                 String expresion = "";
 
                 // Desde aca se insertan para el arbol y siguientes
                 System.out.println("Previo a captar ER");
-                while (tken.get(j).getLexema() == ";") {
+                while (!tken.get(j).getLexema().equals(";")) {
                     expresion += tken.get(j).getLexema();
+                    if (tken.get(j).getLexema().equals("{") || tken.get(j).getLexema().equals("}")) {
 
-                    //  if(tken.get(j).getLexema() != "{" || tken.get(j).getLexema() != "}"){
-                    palabras.add(tken.get(j));
-                    /*
-                                        Las palabras son identificadores que 
-                                          serviran para analisis de la expresion
-                     */
-                    //}
+                    } else {
+                        palabras.add(tken.get(j));
+                    }
 
                     j++;
                 }
+
                 expresiones.add(new Expresiones(id, expresion, palabras));
                 InverArbol arbol = new InverArbol(palabras);
-                System.out.println(arbol.rpn());
-            } else if (tken.get(i).getTipo() == "Id" && (tken.get(i + 1).getLexema() == "->" || tken.get(i + 1).getLexema() == ":")) {
+                System.out.println("ID" + id);
+                System.out.println("Infijo :( " + arbol.rpn() + " A LA NOMBRE");
+            } else if (tken.get(i).getTipo().equals("Id") && (tken.get(i + 1).getLexema().equals("->") || tken.get(i + 1).getLexema().equals(":"))) {
 
                 boolean exitente = true;
                 int j = 0;

@@ -58,4 +58,43 @@ public class Expresiones {
         this.ER = ER;
     }
 
+    boolean operador(String caracer) {
+        String[] simbolo = {".", "|", "*", "" + ""};
+
+        for (int i = 0; i < simbolo.length; i++) {
+            if (caracer == simbolo[i]) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void analisis() {
+        //Crear Arbol binario de busqueda
+        int i = 0;
+        while(i < token.size()){
+            if(operador(token.get(i).getLexema())){
+                //Insertar a la cabeza como operador
+                i++;
+                if(operador(token.get(i).getLexema())){
+                    //Insertar a la izquierda como operador
+                    i++;
+                    if(operador(token.get(i).getLexema())){
+                        //Insertar a la derecha como operador
+                    }else{
+                        //Insertar a la derecha como operando
+                    }
+                }else{
+                    //Insertar a la izquierda como operando
+                }
+            }else{
+                //Insertar como operando lo cual dicata final
+            }
+            i++;
+        }
+    }
+
+
+
 }
